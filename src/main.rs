@@ -21,10 +21,11 @@ enum Command {
 fn init() {
     let project_name = "my_zig_project";
     let root = Path::new(project_name);
-    fs::create_dir(root).expect("Failed to create project directory");
 
-    fs::create_dir(root.join("src")).expect("Failed to create src directory");
+    // 创建项目目录
+    fs::create_dir_all(root.join("src")).expect("Failed to create project directory");
 
+    // 创建 src/main.zig
     let mut main_zig = File::create(root.join("src/main.zig")).unwrap();
     writeln!(
         main_zig,
@@ -37,6 +38,7 @@ pub fn main() void {{
     )
     .unwrap();
 
+    // 创建 build.zig.zon 配置文件
     let mut build_zon = File::create(root.join("build.zig.zon")).unwrap();
     writeln!(
         build_zon,
@@ -48,23 +50,29 @@ pub fn main() void {{
     )
     .unwrap();
 
+    // 创建 solace.lock
     let mut lock = File::create(root.join("solace.lock")).unwrap();
     writeln!(lock, "# Solace lock file for project '{}'", project_name).unwrap();
 
+    // 创建 build.zig
     let mut build_zig = File::create(root.join("build.zig")).unwrap();
     writeln!(
         build_zig,
         r#"const std = @import("std");
 
 pub fn build(b: *std.build.Builder) void {{
+    const mode = b.standardReleaseOptions();
+    const target = b.standardTargetOptions(.{});
     const exe = b.addExecutable("{0}", "src/main.zig");
-    exe.setTarget(b.standardTargetOptions(.{{}}));
-    exe.setBuildMode(b.standardReleaseOptions());
+    exe.setBuildMode(mode);
+    exe.setTarget(target);
     b.installArtifact(exe);
 }}"#,
         project_name
     )
     .unwrap();
+
+    println!("Project '{}' initialized successfully!", project_name);
 }
 
 fn main() -> std::io::Result<()> {
