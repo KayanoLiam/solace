@@ -2,6 +2,13 @@
 name = "solace_rust"
 version = "0.1.0"
 edition = "2024"
+authors = ["Kayano <Kayano04@outlook.jp>"]
+description = "Zig的包管理工具"
+license = "MIT"
+repository = "https://github.com/KayanoLiam/solace.git"
+homepage = "https://github.com/KayanoLiam/solace.git"
+readme = "README.md"
+documentation = "https://docs.rs/solace_rust"
 
 [[bin]]
 name = "solace"
