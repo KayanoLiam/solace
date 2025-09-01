@@ -50,6 +50,21 @@ pub fn main() void {{
 
     let mut lock = File::create(root.join("solace.lock")).unwrap();
     writeln!(lock, "# Solace lock file for project '{}'", project_name).unwrap();
+
+    let mut build_zig = File::create(root.join("build.zig")).unwrap();
+    writeln!(
+        build_zig,
+        r#"const std = @import("std");
+
+pub fn build(b: *std.build.Builder) void {{
+    const exe = b.addExecutable("{0}", "src/main.zig");
+    exe.setTarget(b.standardTargetOptions(.{{}}));
+    exe.setBuildMode(b.standardReleaseOptions());
+    b.installArtifact(exe);
+}}"#,
+        project_name
+    )
+    .unwrap();
 }
 
 fn main() -> std::io::Result<()> {
