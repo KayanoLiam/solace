@@ -2,6 +2,7 @@ use clap::{Parser, Subcommand};
 use std::fs::{self, File};
 use std::io::Write;
 use std::path::Path;
+use rand::Rng;
 
 #[derive(Parser)]
 #[command(name = "solace")]
@@ -22,7 +23,7 @@ fn init() {
     let project_name = "my_zig_project";
     let root = Path::new(project_name);
 
-    fs::create_dir_all(root.join("src")).expect("Failed to create project directory");
+    std::fs::create_dir_all(root.join("src")).expect("Failed to create project directory");
 
     // 创建 src/main.zig
     let mut main_zig = File::create(root.join("src/main.zig")).unwrap();
@@ -83,6 +84,9 @@ pub fn build(b: *std.build.Builder) void {{
     )
     .unwrap();
 
+    // 随机生成 fingerprint
+    let fingerprint: u64 = rand::thread_rng().r#gen(); 
+
     // build.zig.zon
     let mut build_zon = File::create(root.join("build.zig.zon")).unwrap();
     writeln!(
@@ -90,7 +94,7 @@ pub fn build(b: *std.build.Builder) void {{
         r#".{{
     .name = .{0},
     .version = "0.0.0",
-    .fingerprint = 0x8c736521df6834ee,
+    .fingerprint = 0x{1:x},
     .minimum_zig_version = "0.16.0-dev.43+99b2b6151",
     .dependencies = .{{}},
     .paths = .{{
@@ -99,7 +103,7 @@ pub fn build(b: *std.build.Builder) void {{
         "src",
     }},
 }}"#,
-        project_name
+        project_name, fingerprint
     )
     .unwrap();
 
