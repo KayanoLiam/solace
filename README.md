@@ -18,16 +18,16 @@ zig build run
 
 ## Installation
 
+### Quick Install
+```bash
+cargo install solace_rust
+```
+
 ### From Source
 ```bash
 git clone https://github.com/KayanoLiam/solace.git
 cd solace_rust
 cargo install --path .
-```
-
-### From Crates.io (Coming Soon)
-```bash
-cargo install solace_rust
 ```
 
 ## Features
@@ -38,15 +38,50 @@ cargo install solace_rust
 - **Fast & Lightweight**: Built in Rust for maximum performance
 - **Build Integration**: Seamless integration with Zig's build system
 
-## Commands
+## Usage
 
-| Command | Description |
-|---------|-------------|
-| `solace init [name]` | Initialize a new Zig project |
-| `solace add <package>` | Add a dependency |
-| `solace remove <package>` | Remove a dependency |
-| `solace list` | List all dependencies |
-| `solace update` | Update dependencies |
+### Basic Commands
+
+After installation, use the following commands:
+
+```bash
+# Initialize a new Zig project
+solace init my_project
+
+# Navigate to project directory
+cd my_project
+
+# Build and run the project
+zig build run
+```
+
+### Available Commands
+
+| Command | Description | Example |
+|---------|-------------|---------|
+| `solace init [name]` | Initialize a new Zig project | `solace init hello_world` |
+| `solace add <package>` | Add a dependency | `solace add zig-clap` |
+| `solace remove <package>` | Remove a dependency | `solace remove zig-clap` |
+| `solace list` | List all dependencies | `solace list` |
+| `solace update` | Update dependencies | `solace update` |
+
+### Getting Started Example
+
+```bash
+# Install solace
+$ cargo install solace_rust
+
+# Create a new project
+$ solace init hello_world
+Project 'hello_world' initialized successfully!
+
+# Navigate to project
+$ cd hello_world
+
+# Build and run
+$ zig build run
+Hello, hello_world!
+```
 
 ## Project Structure
 
